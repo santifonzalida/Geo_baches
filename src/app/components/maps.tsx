@@ -1,6 +1,6 @@
 'use client'
 
-//Map component Component from library
+import React from 'react';
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 export const defaultMapContainerStyle = {
@@ -56,7 +56,7 @@ function MapComponent({ center, markerPosition, setMarkerPosition }) {
                     </div>
                     <div className="lg:w-1/2 px-6 mt-4 lg:mt-0">
                         <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">COORDENADAS</h2>
-                        <a className="text-red-500 leading-relaxed">-364443,-44526</a>
+                        <button className="text-red-500 leading-relaxed">-364443,-44526</button>
                         <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">DIRECCIÓN</h2>
                         <p className="leading-relaxed">Calle falsa 1234, la luna.</p>
                     </div>

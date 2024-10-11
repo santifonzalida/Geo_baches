@@ -3,20 +3,24 @@
 import React, { useState } from 'react';
 import Image from 'next/image'
 
+type SelectedImage = {
+  size: 0,
+  name:''
+}
 
-const ImageUpload = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+const ImageUpload: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<SelectedImage>();
   const [base64Image, setBase64Image] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // Función para validar el tamaño del archivo (máximo 3 MB)
-  const validateFileSize = (file) => {
+  const validateFileSize = (file: File) => {
     const maxSizeInBytes = 3 * 1024 * 1024; // 3 MB
     return file.size <= maxSizeInBytes;
   };
 
   // Función para convertir el archivo a base64
-  const convertToBase64 = (file) => {
+  const convertToBase64 = (file: File) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -26,31 +30,31 @@ const ImageUpload = () => {
   };
 
   // Función para manejar la subida del archivo
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const file = event.target.files;
     if (!file) {
       return;
     }
 
     // Validar tipo de archivo
-    const fileType = file.type;
+    const fileType = file[0].type;
     if (fileType !== 'image/png' && fileType !== 'image/jpeg') {
       setErrorMessage('Solo se permiten archivos PNG o JPG');
       return;
     }
 
     // Validar tamaño del archivo
-    if (!validateFileSize(file)) {
+    if (!validateFileSize(file[0])) {
       setErrorMessage('El archivo no debe superar los 3 MB');
       return;
     }
 
     setErrorMessage(''); // Limpiar errores anteriores
-    setSelectedImage(file);
+    setSelectedImage(undefined);
 
     try {
-      const base64 = await convertToBase64(file);
+      const base64:string = await convertToBase64(file[0]) as string;
       setBase64Image(base64);
       console.log('Imagen en base64:', base64); // Aquí puedes enviar la imagen al backend o guardarla en la base de datos
     } catch (error) {
